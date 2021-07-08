@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>JavaScript Practice</title>
+
+        <style type="text/css">
+        body { background-color: rgb(202, 227, 248);
+               padding-top: 30px;
+               padding-left: 5%;
+               font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+             }
+
+        
+        button { width: 100px;
+                 height: 30px;
+               }  
+
+        #stop {display: none;}         
+        
+        #shape { width: 100px; 
+                 height: 100px;
+                 margin-top: 60px;
+                 margin-left: 100px;
+                 position: relative;
+                 background-color: blue;
+                 border-style: solid;
+                 display: none;
+               }   
+
+        </style>
+                
+    </head>
+
+    <body>
+        
+        <h2> How fast are your reflexes?</h2>
+        <p> Click on the shapes appearing on the screen to find out your reaction time.<b> Go ahead & Be fast ;)</b></p><br>
+        <h4><b></b>Reaction Time :- <span id= "time"></span></h4> 
+        <button  id="begin"> Begin </button>
+        <button  id="stop"> Stop </button>
+        
+        <div id="shape"></div>
+        
+
+        <script type="text/javascript">
+
+        var start, end, RT, t;
+        var min=0, max=0;
+        
+        function getColor(){ var str = '0123456789ABCDEF' ;
+                             var color = '#';
+                             for (var i=0; i<6; i++) {color += str[Math.floor(Math.random()*16)];}
+                             return color;
+                            }
+
+        function shapeAppear() {
+            document.getElementById("shape").style.width = Math.floor(Math.random()*100) + 100 + "px";
+            document.getElementById("shape").style.height = Math.floor(Math.random()*100) + 100 +"px";
+            document.getElementById("shape").style.marginLeft = Math.floor(Math.random()*50) + 60 +"px"; 
+            document.getElementById("shape").style.marginLeft = Math.floor(Math.random()*900) + 100 +"px";
+            document.getElementById("shape").style.backgroundColor= getColor();
+            document.getElementById("shape").style.display = "block"; 
+            start= Date.now();
+        }
+
+         
+        document.getElementById("begin").onclick = function () {
+            min=0; max=0;
+            shapeAppear();
+            document.getElementById("stop").style.display = "block";
+            document.getElementById("begin").style.display = "none";
+            
+        }
+
+
+        document.getElementById("stop").onclick = function () { 
+            clearTimeout(t);
+            document.getElementById("shape").style.display = "none"; 
+            document.getElementById("begin").style.display = "block";
+            document.getElementById("stop").style.display = "none";
+            document.getElementById("time").innerHTML = "&nbsp &nbsp " + " Min Reaction: " +min+ "s" +"&nbsp &nbsp &nbsp" +" Max Reaction: " +max+ "s";
+        }
+
+
+        document.getElementById("shape").onclick = function () { 
+            end= Date.now(); 
+            RT=(end-start)/1000;
+            if(RT>max)max=RT;
+            if(min==0 || RT<min) min=RT;
+            document.getElementById("shape").style.display = "none";
+            document.getElementById("time").innerHTML = RT + "s";
+            
+            t=setTimeout(shapeAppear, Math.floor(Math.random()*1000));
+
+        }    
+ 
+        </script>
+       
+    </body>
+</html>
